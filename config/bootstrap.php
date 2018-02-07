@@ -5,7 +5,7 @@ use Munee\Asset\Registry;
 defined('DS') || define('DS' , DIRECTORY_SEPARATOR);
 // Define Sub-Folder the Munee Dispatcher file is in
 $subFolder = dirname($_SERVER['SCRIPT_NAME']);
-defined('SUB_FOLDER') || define('SUB_FOLDER', '/' === $subFolder ? '' : $subFolder);
+defined('SUB_FOLDER') || define('SUB_FOLDER', DS === $subFolder ? '' : $subFolder);
 // Define Webroot if hasn't already been defined
 defined('WEBROOT') || define('WEBROOT', str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['SCRIPT_FILENAME']) . SUB_FOLDER);
 // Folder where Munee is located
