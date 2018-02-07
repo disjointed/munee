@@ -31,7 +31,8 @@ class Css extends Type
      */
     protected $options = array(
         'lessifyAllCss' => false,
-        'scssifyAllCss' => false
+        'scssifyAllCss' => false,
+        'noUrlRewriteExtWhitelist' => array('jpg', 'jpeg', 'png', 'gif')
     );
 
     /**
@@ -249,12 +250,17 @@ class Css extends Type
         if (! MUNEE_USING_URL_REWRITE) {
             $dispatcherUrl = MUNEE_DISPATCHER_FILE . '?files=';
             // If url is not already pointing to munee dispatcher file,
-            // isn't pointing to another domain/protocol,
-            // and isn't using data:
+            // isn't pointing to another domain/protocol, isn't using data:,
+            // and it's extension is in $this->options['noUrlRewriteExtWhitelist']
+            
+            // Getting extension from original url
+            $originalUrlExt = pathinfo(parse_url($originalUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
+
             if (
                 strpos($url, $dispatcherUrl) !== 0 &&
                 strpos($originalUrl, '://') === false &&
-                strpos($originalUrl, 'data:') === false
+                strpos($originalUrl, 'data:') === false &&
+                in_array($originalUrlExt, $this->options['noUrlRewriteExtWhitelist'])
             ) {
                 $url = str_replace('?', '&', $url);
                 $url = $dispatcherUrl . $url;
